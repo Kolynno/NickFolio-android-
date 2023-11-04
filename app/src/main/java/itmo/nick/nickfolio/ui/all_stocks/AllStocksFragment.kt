@@ -1,12 +1,15 @@
-package itmo.nick.nickfolio.ui.allStocks
+package itmo.nick.nickfolio.ui.all_stocks
 
+import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import itmo.nick.nickfolio.databinding.FragmentAllStocksBinding
+
 
 class AllStocksFragment : Fragment() {
 
@@ -21,15 +24,20 @@ class AllStocksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val allStocksViewModel =
+        val AllStocksViewModel =
             ViewModelProvider(this).get(AllStocksViewModel::class.java)
 
         _binding = FragmentAllStocksBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-       // val textView: TextView = binding.textGallery
-        allStocksViewModel.text.observe(viewLifecycleOwner) {
-           // textView.text = it
+
+        val stockList = binding.stockList
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, arrayListOf("1","2","3","4","5"))
+        stockList.adapter = adapter
+
+
+        AllStocksViewModel.text.observe(viewLifecycleOwner) {
+
         }
         return root
     }

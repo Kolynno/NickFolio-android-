@@ -1,4 +1,4 @@
-package itmo.nick.nickfolio.ui.stockOffer
+package itmo.nick.nickfolio.ui.stock_offer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,6 @@ import itmo.nick.nickfolio.databinding.FragmentStockOfferBinding
 class StockOfferFragment : Fragment() {
 
     private var _binding: FragmentStockOfferBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -21,16 +18,16 @@ class StockOfferFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val stockOfferViewModel =
-            ViewModelProvider(this).get(StockOfferViewModel::class.java)
+        val StockOfferViewModel = ViewModelProvider(this).get(StockOfferViewModel::class.java)
 
         _binding = FragmentStockOfferBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 
-        stockOfferViewModel.text.observe(viewLifecycleOwner) {
-
+        StockOfferViewModel.text.observe(viewLifecycleOwner) {
+            // Обновите данные в адаптере здесь, когда они доступны
         }
+
         return root
     }
 

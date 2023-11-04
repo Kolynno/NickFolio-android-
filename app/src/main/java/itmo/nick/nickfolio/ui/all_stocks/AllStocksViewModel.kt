@@ -1,10 +1,10 @@
-package itmo.nick.nickfolio.ui.stockOffer
+package itmo.nick.nickfolio.ui.all_stocks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class StockOfferViewModel : ViewModel() {
+class AllStocksViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
