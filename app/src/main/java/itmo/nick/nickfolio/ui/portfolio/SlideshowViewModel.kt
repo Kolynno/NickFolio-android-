@@ -1,4 +1,4 @@
-package itmo.nick.nickfolio.ui.slideshow
+package itmo.nick.nickfolio.ui.portfolio
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

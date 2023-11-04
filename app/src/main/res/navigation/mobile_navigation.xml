@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="itmo.nick.nickfolio.ui.home.HomeFragment"
+        android:name="itmo.nick.nickfolio.ui.stockOffer.HomeFragment"
         android:label="@string/menu_all_stocks"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="itmo.nick.nickfolio.ui.gallery.GalleryFragment"
+        android:name="itmo.nick.nickfolio.ui.allStocks.GalleryFragment"
         android:label="@string/menu_stock_offer"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="itmo.nick.nickfolio.ui.slideshow.SlideshowFragment"
+        android:name="itmo.nick.nickfolio.ui.portfolio.SlideshowFragment"
         android:label="@string/menu_portfolios"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>
