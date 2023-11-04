@@ -1,6 +1,7 @@
 package itmo.nick.nickfolio.ui.all_stocks
 
 import android.R
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
+import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentAllStocksBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 class AllStocksFragment : Fragment() {
@@ -31,9 +38,20 @@ class AllStocksFragment : Fragment() {
         val root: View = binding.root
 
 
-        val stockList = binding.stockList
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, arrayListOf("1","2","3","4","5"))
-        stockList.adapter = adapter
+        val db = StockDatabase.getDatabase(requireContext().applicationContext)
+        val stockRepository = db.stockDao()
+
+        // Запустите операции с базой данных в фоновом потоке
+        runBlocking {
+            launch(Dispatchers.IO) {
+                val names = stockRepository.getAllNames()
+
+                // Обновите пользовательский интерфейс с полученными данными
+                    val stockList = binding.stockList
+                    val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
+                    stockList.adapter = adapter
+            }
+        }
 
 
         AllStocksViewModel.text.observe(viewLifecycleOwner) {
