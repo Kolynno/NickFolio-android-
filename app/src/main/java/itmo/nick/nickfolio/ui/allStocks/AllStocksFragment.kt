@@ -1,17 +1,16 @@
-package itmo.nick.nickfolio.ui.portfolio
+package itmo.nick.nickfolio.ui.allStocks
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import itmo.nick.nickfolio.databinding.FragmentSlideshowBinding
+import itmo.nick.nickfolio.databinding.FragmentAllStocksBinding
 
-class SlideshowFragment : Fragment() {
+class AllStocksFragment : Fragment() {
 
-    private var _binding: FragmentSlideshowBinding? = null
+    private var _binding: FragmentAllStocksBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,15 +21,15 @@ class SlideshowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        val allStocksViewModel =
+            ViewModelProvider(this).get(AllStocksViewModel::class.java)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
+        _binding = FragmentAllStocksBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+       // val textView: TextView = binding.textGallery
+        allStocksViewModel.text.observe(viewLifecycleOwner) {
+           // textView.text = it
         }
         return root
     }
