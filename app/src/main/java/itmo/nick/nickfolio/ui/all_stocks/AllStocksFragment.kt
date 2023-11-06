@@ -21,9 +21,6 @@ import kotlinx.coroutines.withContext
 class AllStocksFragment : Fragment() {
 
     private var _binding: FragmentAllStocksBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,26 +33,20 @@ class AllStocksFragment : Fragment() {
 
         _binding = FragmentAllStocksBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        val stockList = binding.stockList
 
         val db = StockDatabase.getDatabase(requireContext().applicationContext)
         val stockRepository = db.stockDao()
 
-        // Запустите операции с базой данных в фоновом потоке
         runBlocking {
             launch(Dispatchers.IO) {
                 val names = stockRepository.getAllNames()
-
-                // Обновите пользовательский интерфейс с полученными данными
-                    val stockList = binding.stockList
-                    val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
-                    stockList.adapter = adapter
+                val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
+                stockList.adapter = adapter
             }
         }
 
-
         AllStocksViewModel.text.observe(viewLifecycleOwner) {
-
         }
         return root
     }
