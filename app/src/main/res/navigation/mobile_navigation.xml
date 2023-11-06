@@ -9,7 +9,11 @@
         android:id="@+id/nav_home"
         android:name="itmo.nick.nickfolio.ui.all_stocks.AllStocksFragment"
         android:label="@string/menu_all_stocks"
-        tools:layout="@layout/fragment_stock_offer" />
+        tools:layout="@layout/fragment_stock_offer" >
+        <action
+            android:id="@+id/action_nav_home_to_stockDescriptionFragment"
+            app:destination="@id/stockDescriptionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -22,4 +26,9 @@
         android:name="itmo.nick.nickfolio.ui.portfolio.PortfolioFragment"
         android:label="@string/menu_portfolios"
         tools:layout="@layout/fragment_portfolio" />
+    <fragment
+        android:id="@+id/stockDescriptionFragment"
+        android:name="itmo.nick.nickfolio.ui.stock_description.StockDescriptionFragment"
+        android:label="fragment_stock_description"
+        tools:layout="@layout/fragment_stock_description" />
 </navigation>
