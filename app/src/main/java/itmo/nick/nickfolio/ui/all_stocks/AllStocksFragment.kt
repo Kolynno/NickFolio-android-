@@ -33,7 +33,7 @@ class AllStocksFragment : Fragment() {
         val root: View = binding.root
         val stockList = binding.stockList
 
-        val db = StockDatabase.getDatabase(requireContext().applicationContext)
+        val db = StockDatabase.getDatabaseStock(requireContext().applicationContext)
         val stockRepository = db.stockDao()
 
         runBlocking {

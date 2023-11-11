@@ -1,24 +1,49 @@
 package itmo.nick.nickfolio.database
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [Stock::class], version = 1)
 abstract class StockDatabase : RoomDatabase() {
     abstract fun stockDao(): StockDao
+
     companion object {
         @Volatile
-        private var INSTANCE: StockDatabase? = null
-        fun getDatabase(context: Context): StockDatabase {
-            return INSTANCE?: synchronized(this) {
-                val instance = androidx.room.Room.databaseBuilder(
+        private var INSTANCE_STOCK: StockDatabase? = null
+
+        fun getDatabaseStock(context: Context): StockDatabase {
+            return INSTANCE_STOCK ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     StockDatabase::class.java,
                     "Stock"
                 ).build()
-                INSTANCE = instance
+                INSTANCE_STOCK = instance
+
+                instance
+            }
+        }
+    }
+}
+
+@Database(entities = [Offer::class], version = 1)
+abstract class OfferDatabase : RoomDatabase() {
+    abstract fun offerDao(): OfferDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE_OFFER: OfferDatabase? = null
+
+        fun getDatabaseOffer(context: Context): OfferDatabase {
+            return INSTANCE_OFFER ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    OfferDatabase::class.java,
+                    "Offer"
+                ).build()
+                INSTANCE_OFFER = instance
 
                 instance
             }

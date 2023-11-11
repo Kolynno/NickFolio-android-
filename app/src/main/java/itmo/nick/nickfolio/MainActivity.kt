@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
 
         if (isFirstRun) {
-            val db = StockDatabase.getDatabase(application)
+            val db = StockDatabase.getDatabaseStock(application)
             val stockRepository = db.stockDao()
 
             val stocks = listOf(
@@ -491,7 +491,7 @@ class MainActivity : AppCompatActivity() {
         stockName: String,
         bundle: Bundle
     ) {
-        val db = StockDatabase.getDatabase(application)
+        val db = StockDatabase.getDatabaseStock(application)
         val stockRepository = db.stockDao()
 
         // Асинхронно получаем данные из базы данных
