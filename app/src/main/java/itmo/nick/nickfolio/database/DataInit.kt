@@ -9,10 +9,30 @@ import kotlinx.coroutines.runBlocking
 class DataInit {
     companion object {
 
-        fun OfferDataInit(sharedPreferences: SharedPreferences, application: Application) {
+        fun OfferDataInit(application: Application) {
             val db = OfferDatabase.getDatabaseOffer(application)
             val offerRepository = db.offerDao()
 
+            val offers = listOf(
+                Offer(
+                    uid = 1,
+                    name = "Лидеры роста за 5 лет",
+                    stocksIds = "1,2,3"
+                ),
+                Offer(
+                    uid = 2,
+                    name = "Лидеры роста за 10 лет",
+                    stocksIds = "1,5,10,12"
+                )
+            )
+
+            runBlocking {
+                launch(Dispatchers.IO) {
+                    for (offer in offers) {
+                        offerRepository.insert(offer)
+                    }
+                }
+            }
 
         }
         fun StockDataInit(sharedPreferences: SharedPreferences, application: Application) {

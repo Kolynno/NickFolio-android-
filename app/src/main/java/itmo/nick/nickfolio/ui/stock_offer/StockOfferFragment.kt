@@ -9,7 +9,11 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import itmo.nick.nickfolio.MainActivity
+import itmo.nick.nickfolio.database.OfferDatabase
 import itmo.nick.nickfolio.databinding.FragmentStockOfferBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class StockOfferFragment : Fragment() {
 
@@ -25,15 +29,19 @@ class StockOfferFragment : Fragment() {
 
         _binding = FragmentStockOfferBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         val stockOfferList = binding.stockOfferList
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1,
-            listOf("Лидеры роста за 5 лет","Лидеры роста за 10 лет",
-                "Лидеры дивидендов за 5 лет", "Лидеры дивидендов за 10 лет",
-                "Лучший набор за 5 лет", "Лучший набор за 10 лет"))
+        val db = OfferDatabase.getDatabaseOffer(requireContext().applicationContext)
+        val offerRepository = db.offerDao()
 
-        stockOfferList.adapter = adapter
+        runBlocking {
+            launch(Dispatchers.IO) {
+                val names = offerRepository.getAllNames()
+                val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
+                stockOfferList.adapter = adapter
+            }
+        }
+
 
         stockOfferViewModel.text.observe(viewLifecycleOwner) {
         }

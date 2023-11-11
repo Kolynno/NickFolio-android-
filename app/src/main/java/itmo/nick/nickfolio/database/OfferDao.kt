@@ -9,16 +9,15 @@ import androidx.room.Query
 @Dao
 interface OfferDao {
 
-    /*
-    @Query("SELECT name FROM Stock")
+    @Insert
+    fun insert(vararg offer: Offer)
+    @Query("SELECT name FROM Offer")
     fun getAllNames(): List<String>
 
-    @Insert
-    fun insert(vararg stock: Stock)
-
-    @Delete
-    fun delete(stock: Stock)
+    /*
+        @Delete
+        fun delete(stock: Stock)
 
 
-     */
+         */
 }

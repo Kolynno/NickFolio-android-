@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         if (isFirstRun) {
            DataInit.StockDataInit(sharedPreferences, application)
+           DataInit.OfferDataInit(application)
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
