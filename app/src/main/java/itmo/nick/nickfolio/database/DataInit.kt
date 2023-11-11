@@ -17,12 +17,32 @@ class DataInit {
                 Offer(
                     uid = 1,
                     name = "Лидеры роста за 5 лет",
-                    stocksIds = "1,2,3"
+                    stocksIds = null
                 ),
                 Offer(
                     uid = 2,
                     name = "Лидеры роста за 10 лет",
-                    stocksIds = "1,5,10,12"
+                    stocksIds = null
+                ),
+                Offer(
+                    uid = 1,
+                    name = "Лидеры по дивидендам за 5 лет",
+                    stocksIds = null
+                ),
+                Offer(
+                    uid = 2,
+                    name = "Лидеры по дивидендам за 10 лет",
+                    stocksIds = null
+                ),
+                Offer(
+                    uid = 1,
+                    name = "Лучшие акции за 5 лет",
+                    stocksIds = null
+                ),
+                Offer(
+                    uid = 2,
+                    name = "Лучшие акции за 10 лет",
+                    stocksIds = null
                 )
             )
 
