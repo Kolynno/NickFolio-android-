@@ -68,7 +68,5 @@ class AllStocksFragment : Fragment() {
             }
         }
 
-
-
     }
 }

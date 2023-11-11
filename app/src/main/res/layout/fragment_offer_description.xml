@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.offer_description.OfferDescriptionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <ListView
+        android:id="@+id/offer_stock_list"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
 </FrameLayout>

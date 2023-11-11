@@ -18,7 +18,6 @@ class StockDescriptionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Используйте View Binding для надувания макета
         _binding = FragmentStockDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 

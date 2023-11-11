@@ -14,10 +14,11 @@ interface OfferDao {
     @Query("SELECT name FROM Offer")
     fun getAllNames(): List<String>
 
-    /*
-        @Delete
-        fun delete(stock: Stock)
+    @Query("SELECT stocks_ids FROM Offer WHERE name=:name")
+    fun getStocksIdsByName(name: String): String
+
+    @Delete
+    fun delete(offer: Offer)
 
 
-         */
 }

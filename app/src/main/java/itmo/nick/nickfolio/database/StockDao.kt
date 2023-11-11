@@ -12,6 +12,9 @@ interface StockDao {
     @Query("SELECT name FROM Stock")
     fun getAllNames(): List<String>
 
+    @Query("SELECT name FROM Stock WHERE uid=:id")
+    fun getNameById(id: Int): String
+
     @Query("SELECT symbol FROM Stock WHERE name =:name ")
     fun getSymbolByName(name: String): String
 
