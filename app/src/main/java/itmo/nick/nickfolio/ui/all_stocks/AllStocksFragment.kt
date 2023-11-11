@@ -1,7 +1,6 @@
 package itmo.nick.nickfolio.ui.all_stocks
 
 import android.R
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.room.Room
 import itmo.nick.nickfolio.MainActivity
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentAllStocksBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 
 class AllStocksFragment : Fragment() {
@@ -69,7 +64,7 @@ class AllStocksFragment : Fragment() {
         stockList.setOnItemClickListener { adapterView, view2, position, id ->
             if (activity is MainActivity) {
                 val stockName = stockList.getItemAtPosition(position).toString()
-                (activity as MainActivity).transit(stockName)
+                (activity as MainActivity).showStockDescriptionFragment(stockName)
             }
         }
 

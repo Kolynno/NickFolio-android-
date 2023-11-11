@@ -3,7 +3,6 @@ package itmo.nick.nickfolio
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -474,7 +473,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun transit(stockName: String) {
+    fun showStockDescriptionFragment(stockName: String) {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         val bundle = Bundle()
 
@@ -503,5 +502,12 @@ class MainActivity : AppCompatActivity() {
             bundle.putString("stockDividend2023", stockRepository.getDividend2023ByName(stockName))
             bundle.putString("stockCurrency", stockRepository.getCurrencyByName(stockName))
         }
+    }
+
+    fun showOfferDescriptionFragment(offerName: String) {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val bundle = Bundle()
+        bundle.putString("offerName", offerName)
+        navController.navigate(R.id.action_nav_gallery_to_offerDescriptionFragment, bundle)
     }
 }
