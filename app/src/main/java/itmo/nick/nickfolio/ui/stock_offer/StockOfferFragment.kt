@@ -28,7 +28,11 @@ class StockOfferFragment : Fragment() {
 
         val stockOfferList = binding.stockOfferList
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, listOf("Лидеры роста за 5 лет","Лидеры роста за 10 лет"))
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1,
+            listOf("Лидеры роста за 5 лет","Лидеры роста за 10 лет",
+                "Лидеры дивидендов за 5 лет", "Лидеры дивидендов за 10 лет",
+                "Лучший набор за 5 лет", "Лучший набор за 10 лет"))
+
         stockOfferList.adapter = adapter
 
         stockOfferViewModel.text.observe(viewLifecycleOwner) {
