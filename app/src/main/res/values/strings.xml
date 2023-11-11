@@ -10,6 +10,4 @@
     <string name="menu_all_stocks">Все акции</string>
     <string name="menu_stock_offer">Предложения по акциям</string>
     <string name="menu_portfolios">Портфель</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -68,7 +68,8 @@ class AllStocksFragment : Fragment() {
 
         stockList.setOnItemClickListener { adapterView, view2, position, id ->
             if (activity is MainActivity) {
-                (activity as MainActivity).transit()
+                val stockName = stockList.getItemAtPosition(position).toString()
+                (activity as MainActivity).transit(stockName)
             }
         }
 
