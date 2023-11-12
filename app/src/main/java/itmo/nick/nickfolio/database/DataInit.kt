@@ -2,6 +2,7 @@ package itmo.nick.nickfolio.database
 
 import android.app.Application
 import android.content.SharedPreferences
+import itmo.nick.nickfolio.analyze.Analyze
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -25,22 +26,22 @@ class DataInit {
                     stocksIds = null
                 ),
                 Offer(
-                    uid = 1,
+                    uid = 3,
                     name = "Лидеры по дивидендам за 5 лет",
                     stocksIds = null
                 ),
                 Offer(
-                    uid = 2,
+                    uid = 4,
                     name = "Лидеры по дивидендам за 10 лет",
                     stocksIds = null
                 ),
                 Offer(
-                    uid = 1,
+                    uid = 5,
                     name = "Лучшие акции за 5 лет",
                     stocksIds = null
                 ),
                 Offer(
-                    uid = 2,
+                    uid = 6,
                     name = "Лучшие акции за 10 лет",
                     stocksIds = null
                 )
@@ -49,12 +50,30 @@ class DataInit {
             runBlocking {
                 launch(Dispatchers.IO) {
                     for (offer in offers) {
+                        setStocksIds(offer)
                         offerRepository.insert(offer)
                     }
                 }
             }
 
+
+
         }
+
+        private fun setStocksIds(offer: Offer) {
+            var stocksIds: String = ""
+            when(offer.name) {
+                "Лидеры роста за 5 лет" -> stocksIds = Analyze.stockGrow(5)
+                "Лидеры роста за 10 лет" -> stocksIds = Analyze.stockGrow(10)
+                "Лидеры по дивидендам за 5 лет" -> stocksIds = Analyze.stockDivid(5)
+                "Лидеры по дивидендам за 10 лет" -> stocksIds = Analyze.stockDivid(10)
+                "Лучшие акции за 5 лет" -> stocksIds = Analyze.stockBest(5)
+                "Лучшие акции за 10 лет" -> stocksIds = Analyze.stockBest(10)
+            }
+            offer.stocksIds = stocksIds
+        }
+
+
         fun StockDataInit(sharedPreferences: SharedPreferences, application: Application) {
             val db = StockDatabase.getDatabaseStock(application)
             val stockRepository = db.stockDao()

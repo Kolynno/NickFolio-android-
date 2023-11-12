@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class Offer(
     @PrimaryKey val uid: Int,
     @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "stocks_ids") val stocksIds: String?
+    @ColumnInfo(name = "stocks_ids") var stocksIds: String?
 )
