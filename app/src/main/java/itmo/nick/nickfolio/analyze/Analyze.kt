@@ -4,7 +4,7 @@ import android.util.Log
 import itmo.nick.nickfolio.database.Stock
 
 
-class Analyze(val application: Application) {
+class Analyze() {
 
     companion object {
 
@@ -21,9 +21,7 @@ class Analyze(val application: Application) {
                      5 -> {
                          nowPrice = stock.price2023?.toDoubleOrNull()
                          lastPrice = stock.price2018?.toDoubleOrNull()
-
                      }
-
                      10 -> {
                          nowPrice = stock.price2023?.toDoubleOrNull()
                          lastPrice = stock.price2013?.toDoubleOrNull()
@@ -36,14 +34,10 @@ class Analyze(val application: Application) {
                      val pair = Pair(stock.uid, totalProfit)
                      stocksTop.add(pair)
                  }
-
-
              }
 
              val sortedStocksTop = stocksTop.sortedByDescending { it.second }
-             Log.v("TESTING", sortedStocksTop.toString())
              return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
-
         }
 
          fun stockDivid(years: Int, stocks: List<Stock>): String {
@@ -68,7 +62,6 @@ class Analyze(val application: Application) {
              val sortedStocksTop = stocksTop.sortedByDescending { it.second }
              return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
-
         private fun countDivid(years: Int, stock: Stock): Int {
             when(years) {
                 5 -> return  (stock.dividend2023?.toIntOrNull() ?: 0) +
