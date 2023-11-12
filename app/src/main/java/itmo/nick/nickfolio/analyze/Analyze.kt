@@ -1,6 +1,5 @@
 package itmo.nick.nickfolio.analyze
 import android.app.Application
-import android.util.Log
 import itmo.nick.nickfolio.database.Stock
 
 
@@ -17,11 +16,41 @@ class Analyze(val application: Application) {
         }
 
          fun stockDivid(years: Int, stocks: List<Stock>): String {
-            when(years) {
-                5 -> return "1,2,3"
-                10 -> return "4,5,6,7,8"
-            }
-            return ""
+             val stocksTop: MutableList<Pair<Int, Int>> = mutableListOf()
+
+             for (stock in stocks) {
+                 var divid: Int? = 0
+
+                 when(years) {
+                     5 -> {
+                         divid = (stock.dividend2023?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2022?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2021?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2020?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2019?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2018?.toIntOrNull() ?: 0)
+                     }
+                     10 -> {
+                         divid = (stock.dividend2023?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2022?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2021?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2020?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2019?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2018?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2017?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2016?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2015?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2014?.toIntOrNull() ?: 0) +
+                                 (stock.dividend2013?.toIntOrNull() ?: 0)
+                     }
+                 }
+                 if (divid != null) {
+                     val pair = Pair(stock.uid, divid)
+                     stocksTop.add(pair)
+                 }
+             }
+             val sortedStocksTop = stocksTop.sortedByDescending { it.second }
+             return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
 
         fun stockGrow(years: Int, stocks: List<Stock>): String {
@@ -29,29 +58,30 @@ class Analyze(val application: Application) {
             val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
 
             for (stock in stocks) {
+                var nowPrice: Double? = 0.0
+                var lastPrice: Double? = 0.0
 
-                val nowPrice = stock.price2023?.toDoubleOrNull()
-                val lastPrice = stock.price2013?.toDoubleOrNull()
-
+                when(years) {
+                    5 -> {
+                        nowPrice = stock.price2023?.toDoubleOrNull()
+                        lastPrice = stock.price2018?.toDoubleOrNull()
+                    }
+                    10 -> {
+                        nowPrice = stock.price2023?.toDoubleOrNull()
+                        lastPrice = stock.price2013?.toDoubleOrNull()
+                    }
+                }
 
                 if (nowPrice != null && lastPrice != null && lastPrice != 0.0) {
                     val diff = nowPrice - lastPrice
-                    Log.v("TESTING", "diff:$diff, id:${stock.uid}")
-                    val pair = Pair(stock.uid, (diff/lastPrice)*100 )
+                    val pair = Pair(stock.uid, (diff / lastPrice) * 100)
                     stocksTop.add(pair)
                 } else {
 
                 }
             }
-
             val sortedStocksTop = stocksTop.sortedByDescending { it.second }
-            Log.v("TESTING", sortedStocksTop.toString())
-
-            val sorted = sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
-            Log.v("TESTING", sorted)
-            return sorted
-
-
+            return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
     }
 }
