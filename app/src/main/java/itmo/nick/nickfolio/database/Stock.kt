@@ -32,5 +32,6 @@ data class Stock(
     @ColumnInfo(name = "dividend_2015") val dividend2015: String?,
     @ColumnInfo(name = "dividend_2014") val dividend2014: String?,
     @ColumnInfo(name = "dividend_2013") val dividend2013: String?,
-    @ColumnInfo(name = "currency") val currency: String?
+    @ColumnInfo(name = "currency") val currency: String?,
+    @ColumnInfo(name = "capitalization") val capitalization: String?
 )
