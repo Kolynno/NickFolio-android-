@@ -30,6 +30,9 @@ interface StockDao {
     @Query("SELECT currency FROM Stock WHERE name =:name ")
     fun getCurrencyByName(name: String): String
 
+    @Query("SELECT * FROM Stock")
+    fun getAllStocks(): List<Stock>
+
     @Insert
     fun insert(vararg stock: Stock)
 
