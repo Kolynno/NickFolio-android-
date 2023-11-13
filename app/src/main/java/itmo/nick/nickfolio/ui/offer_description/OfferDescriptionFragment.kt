@@ -29,7 +29,6 @@ class OfferDescriptionFragment : Fragment() {
         val offerName = arguments?.getString("offerName")
 
         (activity as AppCompatActivity).supportActionBar?.title = offerName
-
         return view
     }
 
@@ -59,11 +58,8 @@ class OfferDescriptionFragment : Fragment() {
             }
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

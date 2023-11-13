@@ -10,16 +10,12 @@ import androidx.room.Update
 interface PortfolioDao {
     @Insert
     fun insert(vararg portfolio: Portfolio)
-
     @Query("SELECT name FROM Portfolio")
     fun getAllNames(): List<String>
-
     @Query("SELECT * FROM Portfolio WHERE name = :name")
     fun getPortfolioByName(name: String): Portfolio
-
     @Update
     fun update(portfolio: Portfolio)
-
     @Delete
     fun delete(portfolio: Portfolio)
 }

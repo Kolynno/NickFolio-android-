@@ -8,7 +8,6 @@ import androidx.room.Query
 
 @Dao
 interface StockDao {
-
     @Query("SELECT name FROM Stock")
     fun getAllNames(): List<String>
 

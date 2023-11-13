@@ -25,8 +25,6 @@ class StockOfferFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val stockOfferViewModel = ViewModelProvider(this).get(StockOfferViewModel::class.java)
-
         _binding = FragmentStockOfferBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val stockOfferList = binding.stockOfferList
@@ -41,11 +39,6 @@ class StockOfferFragment : Fragment() {
                 stockOfferList.adapter = adapter
             }
         }
-
-
-        stockOfferViewModel.text.observe(viewLifecycleOwner) {
-        }
-
         return root
     }
 
@@ -58,15 +51,11 @@ class StockOfferFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val stockList = binding.stockOfferList
 
-
-        stockList.setOnItemClickListener { adapterView, view2, position, id ->
+        stockList.setOnItemClickListener { adapterView, view, position, id ->
             if (activity is MainActivity) {
                 val offerName = stockList.getItemAtPosition(position).toString()
                 (activity as MainActivity).showOfferDescriptionFragment(offerName)
             }
         }
-
-
-
     }
 }

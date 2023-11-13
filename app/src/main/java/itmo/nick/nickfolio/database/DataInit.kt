@@ -9,7 +9,6 @@ import kotlinx.coroutines.runBlocking
 
 class DataInit {
     companion object {
-
         fun OfferDataInit(application: Application) {
             val offerDB = OfferDatabase.getDatabaseOffer(application)
             val offerRepository = offerDB.offerDao()
@@ -19,9 +18,7 @@ class DataInit {
 
             runBlocking {
                 launch(Dispatchers.IO) {
-                    // Вызывайте все операции с базой данных внутри этой корутины
                     val stocks = stockRepository.getAllStocks()
-
                     val offers = listOf(
                 Offer(
                     uid = 1,
@@ -54,7 +51,6 @@ class DataInit {
                     stocksIds = null
                 )
             )
-
                     for (offer in offers) {
                         setStocksIds(offer, stocks)
                         offerRepository.insert(offer)
@@ -64,8 +60,7 @@ class DataInit {
         }
 
         private fun setStocksIds(offer: Offer, stocks: List<Stock>) {
-
-            var stocksIds: String = ""
+            var stocksIds = ""
             when(offer.name) {
                 "Лидеры роста за 5 лет" -> stocksIds = Analyze.stockGrow(5, stocks)
                 "Лидеры роста за 10 лет" -> stocksIds = Analyze.stockGrow(10, stocks)
@@ -76,7 +71,6 @@ class DataInit {
             }
             offer.stocksIds = stocksIds
         }
-
 
         fun StockDataInit(sharedPreferences: SharedPreferences, application: Application) {
             val db = StockDatabase.getDatabaseStock(application)

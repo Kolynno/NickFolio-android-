@@ -26,9 +26,6 @@ class AllStocksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val AllStocksViewModel =
-            ViewModelProvider(this).get(AllStocksViewModel::class.java)
-
         _binding = FragmentAllStocksBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val stockList = binding.stockList
@@ -43,10 +40,6 @@ class AllStocksFragment : Fragment() {
                 stockList.adapter = adapter
             }
         }
-
-        AllStocksViewModel.text.observe(viewLifecycleOwner) {
-        }
-
         return root
     }
 
@@ -55,11 +48,9 @@ class AllStocksFragment : Fragment() {
         _binding = null
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val stockList = binding.stockList
-
 
         stockList.setOnItemClickListener { adapterView, view2, position, id ->
             if (activity is MainActivity) {
@@ -67,6 +58,5 @@ class AllStocksFragment : Fragment() {
                 (activity as MainActivity).showStockDescriptionFragment(stockName)
             }
         }
-
     }
 }

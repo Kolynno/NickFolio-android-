@@ -5,9 +5,7 @@ import itmo.nick.nickfolio.database.Stock
 
 
 class Analyze() {
-
     companion object {
-
          fun stockBest(years: Int, stocks: List<Stock>): String {
 
              val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
@@ -116,10 +114,8 @@ class Analyze() {
             val sortedStocksTop = stocksTop.sortedByDescending { it.second }
             return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
-
         private fun countGrowPercent(diff: Double, lastPrice: Double): Double {
            return (diff / lastPrice) * 100
         }
-
     }
 }

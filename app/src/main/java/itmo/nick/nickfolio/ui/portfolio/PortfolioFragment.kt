@@ -23,10 +23,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+//TODO: проверка уникальности имени портфеля
+//TODO: portfolio Descritpion
+//TODO: add stocks to potrfolio
+
 class PortfolioFragment : Fragment() {
 
     private var _binding: FragmentPortfolioBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -34,9 +37,6 @@ class PortfolioFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val portfolioViewModel =
-            ViewModelProvider(this).get(PortfolioViewModel::class.java)
-
         _binding = FragmentPortfolioBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -55,18 +55,13 @@ class PortfolioFragment : Fragment() {
         }
 
         val buttonCreatePortfolio = binding.buttonCreatePortfolio
-
         buttonCreatePortfolio.setOnClickListener {
             createPortfolioDialog(portfolioRepository, portfolioList)
         }
-
         portfolioList.setOnItemLongClickListener {adapterView, view, i, l ->
             val positionText = portfolioList.getItemAtPosition(i).toString()
             editPortfolioDialog(portfolioRepository, portfolioList, positionText)
             true
-        }
-
-        portfolioViewModel.text.observe(viewLifecycleOwner) {
         }
         return root
     }
@@ -84,12 +79,12 @@ class PortfolioFragment : Fragment() {
             if (enteredText != "") {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
+
                         var oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
                         oldPortfolio.name = enteredText
                         portfolioRepository.update(oldPortfolio)
 
                         val names = portfolioRepository.getAllNames()
-
                         withContext(Dispatchers.Main) {
                             val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
                             portfolioList.adapter = adapter
@@ -99,11 +94,14 @@ class PortfolioFragment : Fragment() {
             }
             dialog?.dismiss()
         }
+
         builder.setNegativeButton("Отмена") { dialog: DialogInterface?, _: Int ->
             dialog?.cancel()
         }
+
         builder.setNeutralButton("Удалить") { dialog: DialogInterface?, _: Int ->
             lifecycleScope.launch(Dispatchers.IO) {
+
                     var oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
                     portfolioRepository.delete(oldPortfolio)
                     val names = portfolioRepository.getAllNames()
@@ -136,7 +134,8 @@ class PortfolioFragment : Fragment() {
                 ).show()
             } else if (enteredText.isEmpty()) {
                 Toast.makeText(requireContext(), "Пустое имя!", Toast.LENGTH_SHORT).show()
-            } else {
+            }
+            else {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val newPortfolio = Portfolio(name = "Empty", stocksIds = "")
                     newPortfolio.name = enteredText
@@ -160,7 +159,6 @@ class PortfolioFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

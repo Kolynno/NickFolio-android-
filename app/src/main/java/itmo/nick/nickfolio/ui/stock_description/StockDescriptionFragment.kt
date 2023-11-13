@@ -21,7 +21,6 @@ class StockDescriptionFragment : Fragment() {
         _binding = FragmentStockDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        // Доступ к элементам разметки через binding
         val stockName = arguments?.getString("stockName")
         val stockSymbol = arguments?.getString("stockSymbol")
         val stockSector = arguments?.getString("stockSector")
@@ -36,12 +35,9 @@ class StockDescriptionFragment : Fragment() {
         binding.stockDividends2023.text = "Дивиденды за 2023 год:$stockDividends2023"
         binding.stockCurrency.text = "Валюта акции:$stockCurrency"
 
-        // Устанавливаем заголовок фрагмента
         (activity as AppCompatActivity).supportActionBar?.title = stockName
-
         return view
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
