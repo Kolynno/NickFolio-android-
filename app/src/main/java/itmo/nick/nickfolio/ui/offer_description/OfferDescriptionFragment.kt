@@ -22,16 +22,14 @@ class OfferDescriptionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentOfferDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val offerName = arguments?.getString("offerName")
 
-        // Устанавливаем заголовок фрагмента
         (activity as AppCompatActivity).supportActionBar?.title = offerName
 
-        // Inflate the layout for this fragment
         return view
     }
 
@@ -52,7 +50,6 @@ class OfferDescriptionFragment : Fragment() {
                 val ids = offerRepository.getStocksIdsByName(requireArguments().getString("offerName").toString())
                 val stocks: List<String> = ids.split(",")
 
-                //Меняю id на имена
                 val stocksNames: List<String> = stocks.map {
                     stockRepository.getNameById(it.toInt())
                 }

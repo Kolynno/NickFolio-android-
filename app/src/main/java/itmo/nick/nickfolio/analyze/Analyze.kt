@@ -117,7 +117,7 @@ class Analyze() {
             return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
 
-        fun countGrowPercent(diff: Double, lastPrice: Double): Double {
+        private fun countGrowPercent(diff: Double, lastPrice: Double): Double {
            return (diff / lastPrice) * 100
         }
 
