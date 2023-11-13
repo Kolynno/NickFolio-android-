@@ -50,3 +50,25 @@ abstract class OfferDatabase : RoomDatabase() {
         }
     }
 }
+
+@Database(entities = [Portfolio::class], version = 1)
+abstract class PortfolioDatabase : RoomDatabase() {
+    abstract fun portfolioDao(): PortfolioDao
+    companion object {
+        @Volatile
+        private var INSTANCE_OFFER: PortfolioDatabase? = null
+
+        fun getDatabasePortfolio(context: Context): PortfolioDatabase {
+            return INSTANCE_OFFER ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    PortfolioDatabase::class.java,
+                    "Portfolio"
+                ).build()
+                INSTANCE_OFFER = instance
+
+                instance
+            }
+        }
+    }
+}
