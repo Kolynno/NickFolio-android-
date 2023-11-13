@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Portfolio(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "name") var name: String?,
     @ColumnInfo(name = "stocks_ids") var stocksIds: String?
 )
