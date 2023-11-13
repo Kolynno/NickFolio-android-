@@ -21,6 +21,7 @@ import itmo.nick.nickfolio.databinding.FragmentPortfolioBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class PortfolioFragment : Fragment() {
 
@@ -47,7 +48,8 @@ class PortfolioFragment : Fragment() {
         runBlocking {
             launch(Dispatchers.IO) {
                 val names = portfolioRepository.getAllNames()
-                val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
+                val adapter =
+                    ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
                 portfolioList.adapter = adapter
             }
         }
@@ -59,15 +61,61 @@ class PortfolioFragment : Fragment() {
         }
 
         portfolioList.setOnItemLongClickListener {adapterView, view, i, l ->
-            val positionId = portfolioList.getItemIdAtPosition(i)
             val positionText = portfolioList.getItemAtPosition(i).toString()
-            editPortfolioDialog(adapter, positionId, positionText)
+            editPortfolioDialog(portfolioRepository, portfolioList, positionText)
             true
         }
 
         portfolioViewModel.text.observe(viewLifecycleOwner) {
         }
         return root
+    }
+
+    private fun editPortfolioDialog(portfolioRepository: PortfolioDao, portfolioList: ListView, positionText: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(positionText)
+
+        val input = EditText(requireContext())
+        input.hint = "Изменить название"
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog: DialogInterface?, _: Int ->
+            val enteredText = input.text.toString().trim()
+            if (enteredText != "") {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        var oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
+                        oldPortfolio.name = enteredText
+                        portfolioRepository.update(oldPortfolio)
+
+                        val names = portfolioRepository.getAllNames()
+
+                        withContext(Dispatchers.Main) {
+                            val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
+                            portfolioList.adapter = adapter
+                        }
+                    }
+                }
+            }
+            dialog?.dismiss()
+        }
+        builder.setNegativeButton("Отмена") { dialog: DialogInterface?, _: Int ->
+            dialog?.cancel()
+        }
+        builder.setNeutralButton("Удалить") { dialog: DialogInterface?, _: Int ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                    var oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
+                    portfolioRepository.delete(oldPortfolio)
+                    val names = portfolioRepository.getAllNames()
+                    withContext(Dispatchers.Main) {
+                        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
+                        portfolioList.adapter = adapter
+                    }
+            }
+            dialog?.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun createPortfolioDialog(portfolioRepository: PortfolioDao, portfolioList: ListView) {
@@ -95,9 +143,9 @@ class PortfolioFragment : Fragment() {
                     portfolioRepository.insert(newPortfolio)
 
                     val names = portfolioRepository.getAllNames()
-                    val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
 
                     launch(Dispatchers.Main) {
+                        val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, names)
                         portfolioList.adapter = adapter
                     }
                 }
@@ -112,8 +160,6 @@ class PortfolioFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
