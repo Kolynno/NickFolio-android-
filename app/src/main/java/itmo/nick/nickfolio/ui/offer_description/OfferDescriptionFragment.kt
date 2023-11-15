@@ -16,6 +16,7 @@ import itmo.nick.nickfolio.database.PortfolioDao
 import itmo.nick.nickfolio.database.PortfolioDatabase
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentOfferDescriptionBinding
+import itmo.nick.nickfolio.portfolio_operations.PortfolioOperations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -95,7 +96,7 @@ class OfferDescriptionFragment : Fragment() {
                     ) { dialog: DialogInterface, which: Int ->
 
                         val selectedPortfolio = portfolios[which]
-                        addToPortfolio(
+                        PortfolioOperations.addToPortfolio(
                             selectedPortfolio,
                             portfolioRepository,
                             offerRepository,
@@ -103,22 +104,10 @@ class OfferDescriptionFragment : Fragment() {
                         )
                         dialog.dismiss()
                     }
-
                 builder.create().show()
             }
         }
     }
-
-
-    private fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao, offerRepository: OfferDao, offerName: String, ) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val portfolio = portfolioRepository.getPortfolioByName(portfolioName)
-            val stocksIds = offerRepository.getStocksIdsByName(offerName)
-            portfolio.stocksIds = stocksIds
-            portfolioRepository.update(portfolio)
-        }
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
