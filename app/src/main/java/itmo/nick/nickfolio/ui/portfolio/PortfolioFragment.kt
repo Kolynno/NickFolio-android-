@@ -12,8 +12,8 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import itmo.nick.nickfolio.MainActivity
 import itmo.nick.nickfolio.database.Portfolio
 import itmo.nick.nickfolio.database.PortfolioDao
 import itmo.nick.nickfolio.database.PortfolioDatabase
@@ -22,10 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-
-//TODO: проверка уникальности имени портфеля
-//TODO: portfolio Descritpion
-//TODO: add stocks to potrfolio
 
 class PortfolioFragment : Fragment() {
 
@@ -58,6 +54,8 @@ class PortfolioFragment : Fragment() {
         buttonCreatePortfolio.setOnClickListener {
             createPortfolioDialog(portfolioRepository, portfolioList)
         }
+
+
         portfolioList.setOnItemLongClickListener {adapterView, view, i, l ->
             val positionText = portfolioList.getItemAtPosition(i).toString()
             editPortfolioDialog(portfolioRepository, portfolioList, positionText)
@@ -159,6 +157,19 @@ class PortfolioFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val portfolioList = binding.portfolioList
+
+        portfolioList.setOnItemClickListener { adapterView, view, position, id ->
+            if (activity is MainActivity) {
+                val portfolioName = portfolioList.getItemAtPosition(position).toString()
+                (activity as MainActivity).showPortfolioDescription(portfolioName)
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

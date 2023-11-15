@@ -89,4 +89,11 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("offerName", offerName)
         navController.navigate(R.id.action_nav_gallery_to_offerDescriptionFragment, bundle)
     }
+
+    fun showPortfolioDescription(portfolioName: String) {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val bundle = Bundle()
+        bundle.putString("portfolioName", portfolioName)
+        navController.navigate(R.id.action_nav_slideshow_to_portfolioDescriptionFragment, bundle)
+    }
 }
