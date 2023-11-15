@@ -515,7 +515,7 @@ class DataInit {
                     capitalization = "594"
                 ), Stock(
                     uid = 16,
-                    name = "МТС",
+                    name = "Ростелеком",
                     symbol = "RTKM",
                     sector = "Телекоммуникации",
                     price2023 = "55.95",
