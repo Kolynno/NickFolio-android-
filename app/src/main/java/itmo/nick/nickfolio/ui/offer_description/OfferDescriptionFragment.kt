@@ -1,14 +1,19 @@
 package itmo.nick.nickfolio.ui.offer_description
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import itmo.nick.nickfolio.MainActivity
+import androidx.lifecycle.lifecycleScope
+import itmo.nick.nickfolio.database.OfferDao
 import itmo.nick.nickfolio.database.OfferDatabase
+import itmo.nick.nickfolio.database.PortfolioDao
+import itmo.nick.nickfolio.database.PortfolioDatabase
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentOfferDescriptionBinding
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +40,8 @@ class OfferDescriptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val offerName = arguments?.getString("offerName")
+
         val offerStockList = binding.offerStockList
 
         val offerDb = OfferDatabase.getDatabaseOffer(requireContext().applicationContext)
@@ -42,6 +49,9 @@ class OfferDescriptionFragment : Fragment() {
 
         val stockDb = StockDatabase.getDatabaseStock(requireContext().applicationContext)
         val stockRepository = stockDb.stockDao()
+
+        val portfolioDb = PortfolioDatabase.getDatabasePortfolio(requireContext().applicationContext)
+        val portfolioRepository = portfolioDb.portfolioDao()
 
         runBlocking {
             launch(Dispatchers.IO) {
@@ -60,9 +70,53 @@ class OfferDescriptionFragment : Fragment() {
 
         val buttonToPortfolio = binding.buttonToPortfolio
         buttonToPortfolio.setOnClickListener{
-
+            showPortfolioSelectionDialog(portfolioRepository, offerRepository, offerName.toString())
         }
     }
+
+    private fun showPortfolioSelectionDialog(
+        portfolioRepository: PortfolioDao,
+        offerRepository: OfferDao,
+        offerName: String
+    ) {
+        var portfolios: List<String> = emptyList()
+        lifecycleScope.launch(Dispatchers.IO) {
+            portfolios = portfolioRepository.getAllNames()
+        }
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Выберите портфель")
+                .setAdapter(
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        portfolios
+                    )
+                ) { dialog: DialogInterface, which: Int ->
+
+                    val selectedPortfolio = portfolios[which]
+                    addToPortfolio(
+                        selectedPortfolio,
+                        portfolioRepository,
+                        offerRepository,
+                        offerName
+                    )
+                    dialog.dismiss()
+                }
+
+            builder.create().show()
+
+    }
+
+    private fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao, offerRepository: OfferDao, offerName: String, ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val portfolio = portfolioRepository.getPortfolioByName(portfolioName)
+            val stocksIds = offerRepository.getStocksIdsByName(offerName)
+            portfolio.stocksIds = stocksIds
+            portfolioRepository.update(portfolio)
+        }
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
