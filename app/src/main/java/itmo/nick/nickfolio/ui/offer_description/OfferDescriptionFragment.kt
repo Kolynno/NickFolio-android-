@@ -19,6 +19,7 @@ import itmo.nick.nickfolio.databinding.FragmentOfferDescriptionBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class OfferDescriptionFragment : Fragment() {
     private var _binding: FragmentOfferDescriptionBinding? = null
@@ -79,33 +80,35 @@ class OfferDescriptionFragment : Fragment() {
         offerRepository: OfferDao,
         offerName: String
     ) {
-        var portfolios: List<String> = emptyList()
         lifecycleScope.launch(Dispatchers.IO) {
-            portfolios = portfolioRepository.getAllNames()
+            val portfolios = portfolioRepository.getAllNames()
+
+            withContext(Dispatchers.Main) {
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Выберите портфель")
+                    .setAdapter(
+                        ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_list_item_1,
+                            portfolios
+                        )
+                    ) { dialog: DialogInterface, which: Int ->
+
+                        val selectedPortfolio = portfolios[which]
+                        addToPortfolio(
+                            selectedPortfolio,
+                            portfolioRepository,
+                            offerRepository,
+                            offerName
+                        )
+                        dialog.dismiss()
+                    }
+
+                builder.create().show()
+            }
         }
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Выберите портфель")
-                .setAdapter(
-                    ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_list_item_1,
-                        portfolios
-                    )
-                ) { dialog: DialogInterface, which: Int ->
-
-                    val selectedPortfolio = portfolios[which]
-                    addToPortfolio(
-                        selectedPortfolio,
-                        portfolioRepository,
-                        offerRepository,
-                        offerName
-                    )
-                    dialog.dismiss()
-                }
-
-            builder.create().show()
-
     }
+
 
     private fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao, offerRepository: OfferDao, offerName: String, ) {
         lifecycleScope.launch(Dispatchers.IO) {
