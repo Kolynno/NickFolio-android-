@@ -57,6 +57,11 @@ class OfferDescriptionFragment : Fragment() {
                 offerStockList.adapter = adapter
             }
         }
+
+        val buttonToPortfolio = binding.buttonToPortfolio
+        buttonToPortfolio.setOnClickListener{
+
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

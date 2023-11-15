@@ -14,6 +14,8 @@ interface PortfolioDao {
     fun getAllNames(): List<String>
     @Query("SELECT * FROM Portfolio WHERE name = :name")
     fun getPortfolioByName(name: String): Portfolio
+    @Query("SELECT stocks_ids FROM Portfolio WHERE name=:name")
+    fun getStocksIdsByName(name: String): String
     @Update
     fun update(portfolio: Portfolio)
     @Delete
