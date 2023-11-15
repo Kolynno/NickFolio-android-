@@ -32,6 +32,9 @@ interface StockDao {
     @Query("SELECT * FROM Stock")
     fun getAllStocks(): List<Stock>
 
+    @Query("SELECT uid FROM Stock WHERE name =:name ")
+    fun getIdByName(name: String): Int
+
     @Insert
     fun insert(vararg stock: Stock)
 

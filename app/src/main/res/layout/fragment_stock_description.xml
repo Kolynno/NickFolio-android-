@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.stock_description.StockDescriptionFragment">
 
+    <Button
+        android:id="@+id/button_add_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="596dp"
+        android:text="Добавить акцию"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/stock_name"
         android:layout_width="wrap_content"

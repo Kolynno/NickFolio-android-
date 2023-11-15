@@ -1,13 +1,24 @@
 package itmo.nick.nickfolio.ui.stock_description
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import itmo.nick.nickfolio.R
+import androidx.lifecycle.lifecycleScope
+import itmo.nick.nickfolio.database.PortfolioDao
+import itmo.nick.nickfolio.database.PortfolioDatabase
+import itmo.nick.nickfolio.database.StockDao
+import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentStockDescriptionBinding
+import itmo.nick.nickfolio.portfolio_operations.PortfolioOperations
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StockDescriptionFragment : Fragment() {
 
@@ -41,5 +52,55 @@ class StockDescriptionFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val portfolioDb = PortfolioDatabase.getDatabasePortfolio(requireContext().applicationContext)
+        val portfolioRepository = portfolioDb.portfolioDao()
+
+        val stockDb = StockDatabase.getDatabaseStock(requireContext().applicationContext)
+        val stockRepository = stockDb.stockDao()
+
+        val stockName = arguments?.getString("stockName")
+
+        val buttonToPortfolio = binding.buttonAddStock
+        buttonToPortfolio.setOnClickListener{
+            showPortfolioSelectionDialog(portfolioRepository, stockRepository, stockName.toString())
+        }
+    }
+
+    private fun showPortfolioSelectionDialog(
+        portfolioRepository: PortfolioDao,
+        stockRepository: StockDao,
+        stockName: String
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val portfolios = portfolioRepository.getAllNames()
+
+            withContext(Dispatchers.Main) {
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Выберите портфель")
+                    .setAdapter(
+                        ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_list_item_1,
+                            portfolios
+                        )
+                    ) { dialog: DialogInterface, which: Int ->
+
+                        val selectedPortfolio = portfolios[which]
+                        PortfolioOperations.addToPortfolio(
+                            selectedPortfolio,
+                            portfolioRepository,
+                            stockRepository,
+                            stockName
+                        )
+                        dialog.dismiss()
+                    }
+                builder.create().show()
+            }
+        }
     }
 }
