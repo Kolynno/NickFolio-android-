@@ -1,20 +1,15 @@
 package itmo.nick.nickfolio.ui.portfolio_description
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import itmo.nick.nickfolio.R
-import itmo.nick.nickfolio.database.OfferDatabase
+import androidx.fragment.app.Fragment
 import itmo.nick.nickfolio.database.PortfolioDatabase
 import itmo.nick.nickfolio.database.StockDatabase
-import itmo.nick.nickfolio.databinding.FragmentOfferDescriptionBinding
-import itmo.nick.nickfolio.databinding.FragmentPortfolioBinding
 import itmo.nick.nickfolio.databinding.FragmentPortfolioDescriptionBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,12 +26,11 @@ class PortfolioDescriptionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPortfolioDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val portfolioName = arguments?.getString("portfolioName")
-
         (activity as AppCompatActivity).supportActionBar?.title = portfolioName
         return view
     }
@@ -46,8 +40,7 @@ class PortfolioDescriptionFragment : Fragment() {
 
         val portfolioStockList = binding.portfolioStockList
 
-        val portfolioDb =
-            PortfolioDatabase.getDatabasePortfolio(requireContext().applicationContext)
+        val portfolioDb = PortfolioDatabase.getDatabasePortfolio(requireContext().applicationContext)
         val portfolioRepository = portfolioDb.portfolioDao()
 
         val stockDb = StockDatabase.getDatabaseStock(requireContext().applicationContext)
@@ -75,36 +68,21 @@ class PortfolioDescriptionFragment : Fragment() {
             }
         }
 
-        portfolioStockList.setOnItemLongClickListener { parent, view, position, id ->
+        portfolioStockList.setOnItemLongClickListener { _, _, position, _ ->
             val stockName = portfolioStockList.getItemAtPosition(position).toString()
             var stocksIdsNow: MutableList<String> = mutableListOf()
 
             runBlocking {
                 launch(Dispatchers.IO) {
                     val portfolioName = arguments?.getString("portfolioName")
-                    Log.v("TESTING", stockName)
 
-                    // Fetch stockId using stockName
                     val stockId = stockRepository.getIdByName(stockName)
-                    Log.v("TESTING", stockId.toString())
-
                     val portfolio = portfolioRepository.getPortfolioByName(portfolioName.toString())
-                    Log.v("TESTING", portfolio.toString())
-
-                    // Разбиваем текущие ID акций на список
                     val currentStocksIds = portfolio.stocksIds?.split(",")?.toMutableList()
-                    Log.v("TESTING", currentStocksIds.toString())
 
-                    // Удаляем нужный элемент (stockId) из списка
                     currentStocksIds?.remove(stockId.toString())
-
                     stocksIdsNow = currentStocksIds!!
-
-                    val endIds = currentStocksIds?.joinToString(",")
-                    Log.v("TESTING", endIds.toString())
-
-                    // Обновляем портфель с новым списком акций
-                    portfolio.stocksIds = endIds
+                    portfolio.stocksIds = currentStocksIds.joinToString(",")
 
                     portfolioRepository.update(portfolio)
                 }
@@ -116,13 +94,11 @@ class PortfolioDescriptionFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
 
-            // Вызываем метод в основном потоке для обновления адаптера
             requireActivity().runOnUiThread {
-                // Получаем адаптер и обновляем его данные
+
                 val adapter = portfolioStockList.adapter as ArrayAdapter<String>
                 adapter.clear()
 
-                // Fetch stock names using currentStocksIds
                 val stockNames = stocksIdsNow.map { stockId ->
                     runBlocking {
                         withContext(Dispatchers.IO) {
@@ -130,16 +106,11 @@ class PortfolioDescriptionFragment : Fragment() {
                         }
                     }
                 }.toList()
-
                 adapter.addAll(stockNames)
                 adapter.notifyDataSetChanged()
             }
-
             true
         }
-
-
-
     }
     override fun onDestroyView() {
         super.onDestroyView()

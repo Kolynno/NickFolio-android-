@@ -55,9 +55,8 @@ class PortfolioFragment : Fragment() {
             createPortfolioDialog(portfolioRepository, portfolioList)
         }
 
-
-        portfolioList.setOnItemLongClickListener {adapterView, view, i, l ->
-            val positionText = portfolioList.getItemAtPosition(i).toString()
+        portfolioList.setOnItemLongClickListener {_, _, position, _ ->
+            val positionText = portfolioList.getItemAtPosition(position).toString()
             editPortfolioDialog(portfolioRepository, portfolioList, positionText)
             true
         }
@@ -78,7 +77,7 @@ class PortfolioFragment : Fragment() {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
 
-                        var oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
+                        val oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
                         oldPortfolio.name = enteredText
                         portfolioRepository.update(oldPortfolio)
 
@@ -92,15 +91,13 @@ class PortfolioFragment : Fragment() {
             }
             dialog?.dismiss()
         }
-
         builder.setNegativeButton("Отмена") { dialog: DialogInterface?, _: Int ->
             dialog?.cancel()
         }
-
         builder.setNeutralButton("Удалить") { dialog: DialogInterface?, _: Int ->
             lifecycleScope.launch(Dispatchers.IO) {
 
-                    var oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
+                    val oldPortfolio = portfolioRepository.getPortfolioByName(positionText)
                     portfolioRepository.delete(oldPortfolio)
                     val names = portfolioRepository.getAllNames()
                     withContext(Dispatchers.Main) {
@@ -162,7 +159,7 @@ class PortfolioFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val portfolioList = binding.portfolioList
 
-        portfolioList.setOnItemClickListener { adapterView, view, position, id ->
+        portfolioList.setOnItemClickListener { _, _, position, _ ->
             if (activity is MainActivity) {
                 val portfolioName = portfolioList.getItemAtPosition(position).toString()
                 (activity as MainActivity).showPortfolioDescription(portfolioName)

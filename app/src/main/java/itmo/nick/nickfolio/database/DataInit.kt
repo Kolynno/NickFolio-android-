@@ -64,8 +64,8 @@ class DataInit {
             when(offer.name) {
                 "Лидеры роста за 5 лет" -> stocksIds = Analyze.stockGrow(5, stocks)
                 "Лидеры роста за 10 лет" -> stocksIds = Analyze.stockGrow(10, stocks)
-                "Лидеры по дивидендам за 5 лет" -> stocksIds = Analyze.stockDivid(5, stocks)
-                "Лидеры по дивидендам за 10 лет" -> stocksIds = Analyze.stockDivid(10, stocks)
+                "Лидеры по дивидендам за 5 лет" -> stocksIds = Analyze.stockDividends(5, stocks)
+                "Лидеры по дивидендам за 10 лет" -> stocksIds = Analyze.stockDividends(10, stocks)
                 "Лучшие акции за 5 лет" -> stocksIds = Analyze.stockBest(5, stocks)
                 "Лучшие акции за 10 лет" -> stocksIds = Analyze.stockBest(10, stocks)
             }

@@ -2,13 +2,13 @@ package itmo.nick.nickfolio.ui.offer_description
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import itmo.nick.nickfolio.database.OfferDao
 import itmo.nick.nickfolio.database.OfferDatabase
@@ -43,7 +43,6 @@ class OfferDescriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val offerName = arguments?.getString("offerName")
-
         val offerStockList = binding.offerStockList
 
         val offerDb = OfferDatabase.getDatabaseOffer(requireContext().applicationContext)

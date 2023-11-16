@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import itmo.nick.nickfolio.MainActivity
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentAllStocksBinding
@@ -52,7 +51,7 @@ class AllStocksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val stockList = binding.stockList
 
-        stockList.setOnItemClickListener { adapterView, view2, position, id ->
+        stockList.setOnItemClickListener { _, _, position, _ ->
             if (activity is MainActivity) {
                 val stockName = stockList.getItemAtPosition(position).toString()
                 (activity as MainActivity).showStockDescriptionFragment(stockName)

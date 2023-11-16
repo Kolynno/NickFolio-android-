@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import itmo.nick.nickfolio.MainActivity
 import itmo.nick.nickfolio.database.OfferDatabase
 import itmo.nick.nickfolio.databinding.FragmentStockOfferBinding
@@ -51,7 +50,7 @@ class StockOfferFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val stockList = binding.stockOfferList
 
-        stockList.setOnItemClickListener { adapterView, view, position, id ->
+        stockList.setOnItemClickListener { _, _, position, _ ->
             if (activity is MainActivity) {
                 val offerName = stockList.getItemAtPosition(position).toString()
                 (activity as MainActivity).showOfferDescriptionFragment(offerName)

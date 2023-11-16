@@ -2,13 +2,13 @@ package itmo.nick.nickfolio.ui.stock_description
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import itmo.nick.nickfolio.database.PortfolioDao
 import itmo.nick.nickfolio.database.PortfolioDatabase
@@ -28,7 +28,7 @@ class StockDescriptionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentStockDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -39,22 +39,21 @@ class StockDescriptionFragment : Fragment() {
         val stockDividends2023 = arguments?.getString("stockDividend2023")
         val stockCurrency = arguments?.getString("stockCurrency")
 
-
         binding.stockName.text = "Название: $stockName"
-        binding.stockSymbol.text = "Код акции: $stockSymbol"
+        binding.stockSymbol.text = "Код: $stockSymbol"
         binding.stockSector.text = "Сектор: $stockSector"
         if(stockCurrency == "RUB") {
-            binding.stockPrice2023.text = "Цена на начало 2023 года: $stockPrice2023₽"
-            binding.stockDividends2023.text = "Дивиденды за 2023 год: $stockDividends2023₽"
+            binding.stockPrice2023.text = "Цена на начало 2023 года: $stockPrice2023 ₽"
+            binding.stockDividends2023.text = "Дивиденды за 2023 год: $stockDividends2023 ₽"
         } else {
-            binding.stockPrice2023.text = "Цена на начало 2023 года: $stockPrice2023$"
-            binding.stockDividends2023.text = "Дивиденды за 2023 год: $stockDividends2023$"
+            binding.stockPrice2023.text = "Цена на начало 2023 года: $stockPrice2023 $"
+            binding.stockDividends2023.text = "Дивиденды за 2023 год: $stockDividends2023 $"
         }
-
 
         (activity as AppCompatActivity).supportActionBar?.title = stockName
         return view
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -70,7 +69,6 @@ class StockDescriptionFragment : Fragment() {
         val stockRepository = stockDb.stockDao()
 
         val stockName = arguments?.getString("stockName")
-
         val buttonToPortfolio = binding.buttonAddStock
         buttonToPortfolio.setOnClickListener{
             showPortfolioSelectionDialog(portfolioRepository, stockRepository, stockName.toString())

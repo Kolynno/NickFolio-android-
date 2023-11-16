@@ -1,6 +1,4 @@
 package itmo.nick.nickfolio.analyze
-import android.app.Application
-import android.util.Log
 import itmo.nick.nickfolio.database.Stock
 
 
@@ -9,7 +7,6 @@ class Analyze() {
          fun stockBest(years: Int, stocks: List<Stock>): String {
 
              val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
-
              for(stock in stocks) {
                  var totalProfit: Double
                  var nowPrice: Double? = 0.0
@@ -28,7 +25,7 @@ class Analyze() {
 
                  if (nowPrice != null && lastPrice != null && lastPrice != 0.0) {
                      val diff = nowPrice - lastPrice
-                     totalProfit = countDivid(years, stock).toDouble() + countGrowPercent(diff, lastPrice)
+                     totalProfit = countDividends(years, stock).toDouble() + countGrowPercent(diff, lastPrice)
                      val pair = Pair(stock.uid, totalProfit)
                      stocksTop.add(pair)
                  }
@@ -38,7 +35,7 @@ class Analyze() {
              return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
 
-         fun stockDivid(years: Int, stocks: List<Stock>): String {
+         fun stockDividends(years: Int, stocks: List<Stock>): String {
              val stocksTop: MutableList<Pair<Int, Int>> = mutableListOf()
 
              for (stock in stocks) {
@@ -46,10 +43,10 @@ class Analyze() {
 
                  when(years) {
                      5 -> {
-                         divid = countDivid(years, stock)
+                         divid = countDividends(years, stock)
                      }
                      10 -> {
-                         divid = countDivid(years, stock)
+                         divid = countDividends(years, stock)
                      }
                  }
                  if (divid != null) {
@@ -60,9 +57,9 @@ class Analyze() {
              val sortedStocksTop = stocksTop.sortedByDescending { it.second }
              return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
         }
-        private fun countDivid(years: Int, stock: Stock): Int {
+        private fun countDividends(years: Int, stock: Stock): Int {
             when(years) {
-                5 -> return  (stock.dividend2023?.toIntOrNull() ?: 0) +
+                5 -> return (stock.dividend2023?.toIntOrNull() ?: 0) +
                         (stock.dividend2022?.toIntOrNull() ?: 0) +
                         (stock.dividend2021?.toIntOrNull() ?: 0) +
                         (stock.dividend2020?.toIntOrNull() ?: 0) +
@@ -87,7 +84,6 @@ class Analyze() {
         fun stockGrow(years: Int, stocks: List<Stock>): String {
 
             val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
-
             for (stock in stocks) {
                 var nowPrice: Double? = 0.0
                 var lastPrice: Double? = 0.0
@@ -107,8 +103,6 @@ class Analyze() {
                     val diff = nowPrice - lastPrice
                     val pair = Pair(stock.uid, countGrowPercent(diff, lastPrice))
                     stocksTop.add(pair)
-                } else {
-
                 }
             }
             val sortedStocksTop = stocksTop.sortedByDescending { it.second }
