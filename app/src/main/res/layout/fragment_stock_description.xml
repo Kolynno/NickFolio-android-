@@ -34,7 +34,7 @@
         android:layout_marginStart="5dp"
         android:text="Name"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stock_name" />
 
@@ -45,7 +45,7 @@
         android:layout_marginStart="5dp"
         android:text="Name"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stock_symbol" />
 
@@ -56,7 +56,7 @@
         android:layout_marginStart="5dp"
         android:text="Name"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stock_sector" />
 
@@ -67,19 +67,8 @@
         android:layout_marginStart="5dp"
         android:text="Name"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stock_price2023" />
-
-    <TextView
-        android:id="@+id/stock_currency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Name"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stock_dividends2023" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
