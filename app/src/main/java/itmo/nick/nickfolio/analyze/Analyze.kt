@@ -32,7 +32,10 @@ class Analyze() {
              }
 
              val sortedStocksTop = stocksTop.sortedByDescending { it.second }
-             return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
+             return sortedStocksTop.
+             take(10).
+             joinToString { it.first.toString() }.
+             replace(" ", "")
         }
 
          fun stockDividends(years: Int, stocks: List<Stock>): String {
@@ -55,7 +58,10 @@ class Analyze() {
                  }
              }
              val sortedStocksTop = stocksTop.sortedByDescending { it.second }
-             return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
+             return sortedStocksTop.
+             take(10).
+             joinToString { it.first.toString() }.
+             replace(" ", "")
         }
         private fun countDividends(years: Int, stock: Stock): Int {
             when(years) {
@@ -106,7 +112,10 @@ class Analyze() {
                 }
             }
             val sortedStocksTop = stocksTop.sortedByDescending { it.second }
-            return sortedStocksTop.take(10).joinToString { it.first.toString() }.replace(" ", "")
+            return sortedStocksTop.
+            take(10).
+            joinToString { it.first.toString() }.
+            replace(" ", "")
         }
         private fun countGrowPercent(diff: Double, lastPrice: Double): Double {
            return (diff / lastPrice) * 100

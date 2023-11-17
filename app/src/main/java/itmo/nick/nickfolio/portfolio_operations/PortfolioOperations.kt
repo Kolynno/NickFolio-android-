@@ -9,12 +9,20 @@ import kotlinx.coroutines.runBlocking
 
 class PortfolioOperations {
     companion object{
-        fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao, offerRepository: OfferDao, offerName: String) {
+        fun addToPortfolio(portfolioName: String,
+                           portfolioRepository: PortfolioDao,
+                           offerRepository: OfferDao,
+                           offerName: String) {
             runBlocking {
                 launch(Dispatchers.IO) {
                     val portfolio = portfolioRepository.getPortfolioByName(portfolioName)
-                    val currentStocksIds = portfolio.stocksIds?.split(",")?.filter { it.isNotEmpty() }?.toMutableSet()
-                    val newStocksIds = offerRepository.getStocksIdsByName(offerName).split(",")
+                    val currentStocksIds =
+                        portfolio.stocksIds?.
+                        split(",")?.
+                        filter { it.isNotEmpty() }?.
+                        toMutableSet()
+                    val newStocksIds =
+                        offerRepository.getStocksIdsByName(offerName).split(",")
 
                     currentStocksIds?.addAll(newStocksIds)
                     portfolio.stocksIds = currentStocksIds?.joinToString(",")
@@ -24,11 +32,18 @@ class PortfolioOperations {
             }
         }
 
-        fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao, stockRepository: StockDao, stockName: String) {
+        fun addToPortfolio(portfolioName: String,
+                           portfolioRepository: PortfolioDao,
+                           stockRepository: StockDao,
+                           stockName: String) {
             runBlocking {
                 launch(Dispatchers.IO) {
                     val portfolio = portfolioRepository.getPortfolioByName(portfolioName)
-                    val currentStocksIds = portfolio.stocksIds?.split(",")?.filter { it.isNotEmpty() }?.toMutableSet()
+                    val currentStocksIds = portfolio.stocksIds?.
+                    split(",")?.
+                    filter { it.isNotEmpty() }?.
+                    toMutableSet()
+
                     val newStockId = stockRepository.getIdByName(stockName)
 
                     currentStocksIds?.add(newStockId.toString())
