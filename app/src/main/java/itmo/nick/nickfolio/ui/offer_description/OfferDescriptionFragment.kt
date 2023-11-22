@@ -58,7 +58,12 @@ class OfferDescriptionFragment : Fragment() {
         runBlocking {
             launch(Dispatchers.IO) {
 
-                val stocksNames = getStockNames(portfolioRepository, stockRepository)
+                val ids = offerRepository.getStocksIdsByName(requireArguments().getString("offerName").toString())
+                val stocks: List<String> = ids.split(",")
+
+                val stocksNames: List<String> = stocks.map {
+                    stockRepository.getNameById(it.toInt())
+                }
 
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stocksNames)
                 offerStockList.adapter = adapter
@@ -71,12 +76,7 @@ class OfferDescriptionFragment : Fragment() {
         }
     }
 
-    /**
-        Получить название акций по их id из портфеля.
-        Аргументы:
-        portfolioRepository - репозиторий портфелей
-        stockRepository - репозиторий акций
-     */
+
     fun getStockNames(portfolioRepository: PortfolioDao, stockRepository: StockDao): List<String> {
         val ids = portfolioRepository.getStocksIdsByName(
             requireArguments().getString("portfolioName").toString()

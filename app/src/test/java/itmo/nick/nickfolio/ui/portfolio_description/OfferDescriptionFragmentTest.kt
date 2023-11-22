@@ -4,12 +4,13 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import itmo.nick.nickfolio.database.PortfolioDao
 import itmo.nick.nickfolio.database.StockDao
+import itmo.nick.nickfolio.ui.offer_description.OfferDescriptionFragment
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
-class PortfolioDescriptionFragmentTest {
+class OfferDescriptionFragmentTest {
 
     @Test
     fun `should return correct data`() = runBlocking {
@@ -26,7 +27,7 @@ class PortfolioDescriptionFragmentTest {
             "Stock${firstArg<Int>()}"
         }
 
-        val fragment = PortfolioDescriptionFragment()
+        val fragment = OfferDescriptionFragment()
         val result = fragment.getStockNames(portfolioRepository, stockRepository)
 
         assertEquals(expectedStockNames, result)
