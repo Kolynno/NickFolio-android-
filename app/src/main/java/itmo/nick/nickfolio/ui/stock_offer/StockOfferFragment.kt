@@ -46,6 +46,9 @@ class StockOfferFragment : Fragment() {
         _binding = null
     }
 
+    /**
+        Переключение на другой фрагмент через MainActivity по клику на акцию
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val stockList = binding.stockOfferList

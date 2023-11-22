@@ -9,6 +9,10 @@ import kotlinx.coroutines.runBlocking
 
 class DataInit {
     companion object {
+        /**
+            Первичная иницилизация данных(при первом запуске приложения на устройстве)
+            Добавляются в БД: данные по акциям, данные по предложениям
+         */
         fun OfferDataInit(application: Application) {
             val offerDB = OfferDatabase.getDatabaseOffer(application)
             val offerRepository = offerDB.offerDao()

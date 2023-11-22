@@ -53,14 +53,15 @@ class PortfolioDescriptionFragment : Fragment() {
 
                     val stocksNames = getStockNames(portfolioRepository, stockRepository)
 
-                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stocksNames
-                    )
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stocksNames)
                     portfolioStockList.adapter = adapter
                 }
-
         }
 
-
+        /**
+            Удаление акции из портфеля по долгому нажатию на нее.
+            Также всплывает Toast для информировании пользователя об удалении акции
+         */
         portfolioStockList.setOnItemLongClickListener { _, _, position, _ ->
             val stockName = portfolioStockList.getItemAtPosition(position).toString()
             var stocksIdsNow: MutableList<String> = mutableListOf()

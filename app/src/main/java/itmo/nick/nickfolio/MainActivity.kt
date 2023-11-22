@@ -26,13 +26,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+    /**
+        Проверка, что приложение запускается впервые на устройстве, чтобы иницилизировать все данные по
+        акциям и предложениям
+     */
         val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
         if (isFirstRun) {
            DataInit.StockDataInit(sharedPreferences, application)
            DataInit.OfferDataInit(application)
         }
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -42,11 +47,16 @@ class MainActivity : AppCompatActivity() {
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
+    /**
+        Переключение фрагментов, используя боковую панель приложения
+     */
         appBarConfiguration = AppBarConfiguration(
             setOf( R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         return true
@@ -55,6 +65,14 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
+    /**
+        Переключение фрагементов через контроллер, а также передача нужной информации с
+        помощью bundle.
+        Аргументы:
+        stockName - название акции
+     */
     fun showStockDescriptionFragment(stockName: String) {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         val bundle = Bundle()

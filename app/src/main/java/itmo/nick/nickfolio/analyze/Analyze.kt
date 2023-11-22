@@ -2,8 +2,15 @@ package itmo.nick.nickfolio.analyze
 import itmo.nick.nickfolio.database.Stock
 
 
-class Analyze() {
+class Analyze {
     companion object {
+
+        /**
+            Составление списка 10 лучших акций по критериям: процент роста за 5/10 лет плюс
+            процент дивидендной доходности за 5/10 лет.
+            Все акции анализируются и возвращается строка вида "2,3,5,1,13,25,11,12,14,4",
+            где представлены лучшие акции по критерию в порядке убывания
+         */
          fun stockBest(years: Int, stocks: List<Stock>): String {
 
              val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
@@ -38,6 +45,11 @@ class Analyze() {
              replace(" ", "")
         }
 
+        /**
+            Составление списка 10 лучших акций по критерию дивидендной доходности за 5/10 лет.
+            Все акции анализируются и возвращается строка вида "2,3,5,1,13,25,11,12,14,4",
+            где представлены лучшие акции по критерию в порядке убывания
+         */
          fun stockDividends(years: Int, stocks: List<Stock>): String {
              val stocksTop: MutableList<Pair<Int, Int>> = mutableListOf()
 
@@ -87,6 +99,11 @@ class Analyze() {
             return 0
         }
 
+        /**
+            Составление списка 10 лучших акций по критерию процент роста за 5/10 лет.
+            Все акции анализируются и возвращается строка вида "2,3,5,1,13,25,11,12,14,4",
+            где представлены лучшие акции по критерию в порядке убывания
+         */
         fun stockGrow(years: Int, stocks: List<Stock>): String {
 
             val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()

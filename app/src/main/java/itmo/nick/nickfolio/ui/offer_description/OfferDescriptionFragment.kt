@@ -71,6 +71,12 @@ class OfferDescriptionFragment : Fragment() {
         }
     }
 
+    /**
+        Получить название акций по их id из портфеля.
+        Аргументы:
+        portfolioRepository - репозиторий портфелей
+        stockRepository - репозиторий акций
+     */
     fun getStockNames(portfolioRepository: PortfolioDao, stockRepository: StockDao): List<String> {
         val ids = portfolioRepository.getStocksIdsByName(
             requireArguments().getString("portfolioName").toString()
@@ -85,6 +91,14 @@ class OfferDescriptionFragment : Fragment() {
         return emptyList()
     }
 
+
+    /**
+        Отобразить диалоговое окно для выбора портфеля, куда сохранить предложенные акции.
+        Аргументы:
+        portfolioRepository - репозиторий портфелей
+        offerRepository - репозиторий предложений
+        offerName - название предложения
+     */
     private fun showPortfolioSelectionDialog(
         portfolioRepository: PortfolioDao,
         offerRepository: OfferDao,

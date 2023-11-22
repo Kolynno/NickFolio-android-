@@ -8,6 +8,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class PortfolioOperations {
+
+    /**
+        Добавление новых акций в определенный портфель.
+        Первая функция для добавления преложенных акций
+        Вторая - для одной акции из списка.
+        Аргументы:
+        portfolioName - название портфеля
+        portfolioRepository - репозиторий портфелей
+        offerRepository - репозиторий предложений
+        offerName - название предложения
+        stockRepository - репозиторий акций
+        stockName - название акции
+     */
     companion object{
         fun addToPortfolio(portfolioName: String,
                            portfolioRepository: PortfolioDao,

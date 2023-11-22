@@ -63,6 +63,13 @@ class PortfolioFragment : Fragment() {
         return root
     }
 
+    /**
+        Создание диалогового окна для изменения названия акции или удаления
+        Аргументы:
+        portfolioRepository - репозиторий портфелей
+        portfolioList - список акций портфеля
+        positionText - название портфеля
+     */
     private fun editPortfolioDialog(portfolioRepository: PortfolioDao, portfolioList: ListView, positionText: String) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(positionText)
@@ -111,6 +118,12 @@ class PortfolioFragment : Fragment() {
         dialog.show()
     }
 
+    /**
+     Создать диалоговое окно для создания нового портфеля.
+     Аргументы:
+     portfolioRepository - репозиторий портфелей
+     portfolioList - список портфелей
+     */
     private fun createPortfolioDialog(portfolioRepository: PortfolioDao, portfolioList: ListView) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Новый портфель")

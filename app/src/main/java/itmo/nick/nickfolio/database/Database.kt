@@ -9,6 +9,10 @@ import androidx.room.RoomDatabase
 abstract class StockDatabase : RoomDatabase() {
     abstract fun stockDao(): StockDao
 
+
+    /**
+        Определение баз данных: Stock, Offer, Portfolio
+     */
     companion object {
         @Volatile
         private var INSTANCE_STOCK: StockDatabase? = null

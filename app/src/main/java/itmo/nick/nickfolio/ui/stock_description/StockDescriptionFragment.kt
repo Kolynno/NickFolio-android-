@@ -75,6 +75,14 @@ class StockDescriptionFragment : Fragment() {
         }
     }
 
+    /**
+        Создание диалогового окна, в котором пользователь может выбрать нужный портфель, чтобы
+        туда добавить акцию.
+        Аргументы:
+        portfolioRepository - репозиторий портфелей
+        stockRepository - репозиторий акций
+        stockName - название акции
+     */
     private fun showPortfolioSelectionDialog(
         portfolioRepository: PortfolioDao,
         stockRepository: StockDao,
