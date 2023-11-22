@@ -37,8 +37,6 @@ class MainActivity : AppCompatActivity() {
            DataInit.OfferDataInit(application)
         }
 
-
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
@@ -56,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         return true
@@ -65,7 +62,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 
     /**
         Переключение фрагементов через контроллер, а также передача нужной информации с
@@ -84,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private suspend fun getDataFromDatabaseToStockDescriptionBundle(stockName: String, bundle: Bundle) {
         val db = StockDatabase.getDatabaseStock(application)
         val stockRepository = db.stockDao()
@@ -95,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             bundle.putString("stockCurrency", stockRepository.getCurrencyByName(stockName))
         }
     }
+
     fun showOfferDescriptionFragment(offerName: String) {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         val bundle = Bundle()

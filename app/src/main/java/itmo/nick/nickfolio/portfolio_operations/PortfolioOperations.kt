@@ -10,9 +10,8 @@ import kotlinx.coroutines.runBlocking
 class PortfolioOperations {
 
     /**
-        Добавление новых акций в определенный портфель.
-        Первая функция для добавления преложенных акций
-        Вторая - для одной акции из списка.
+        Добавление новых акций в определенный портфель. Первая функция для добавления преложенных
+        акций. Вторая - для одной акции из списка.
         Аргументы:
         portfolioName - название портфеля
         portfolioRepository - репозиторий портфелей
@@ -22,10 +21,8 @@ class PortfolioOperations {
         stockName - название акции
      */
     companion object{
-        fun addToPortfolio(portfolioName: String,
-                           portfolioRepository: PortfolioDao,
-                           offerRepository: OfferDao,
-                           offerName: String) {
+        fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao,
+                           offerRepository: OfferDao, offerName: String) {
             runBlocking {
                 launch(Dispatchers.IO) {
                     val portfolio = portfolioRepository.getPortfolioByName(portfolioName)
@@ -39,16 +36,13 @@ class PortfolioOperations {
 
                     currentStocksIds?.addAll(newStocksIds)
                     portfolio.stocksIds = currentStocksIds?.joinToString(",")
-
                     portfolioRepository.update(portfolio)
                 }
             }
         }
 
-        fun addToPortfolio(portfolioName: String,
-                           portfolioRepository: PortfolioDao,
-                           stockRepository: StockDao,
-                           stockName: String) {
+        fun addToPortfolio(portfolioName: String, portfolioRepository: PortfolioDao,
+                           stockRepository: StockDao, stockName: String) {
             runBlocking {
                 launch(Dispatchers.IO) {
                     val portfolio = portfolioRepository.getPortfolioByName(portfolioName)
@@ -58,10 +52,8 @@ class PortfolioOperations {
                     toMutableSet()
 
                     val newStockId = stockRepository.getIdByName(stockName)
-
                     currentStocksIds?.add(newStockId.toString())
                     portfolio.stocksIds = currentStocksIds?.joinToString(",")
-
                     portfolioRepository.update(portfolio)
                 }
             }

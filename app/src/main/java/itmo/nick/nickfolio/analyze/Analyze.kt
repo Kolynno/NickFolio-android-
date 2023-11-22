@@ -4,7 +4,6 @@ import itmo.nick.nickfolio.database.Stock
 
 class Analyze {
     companion object {
-
         /**
             Составление списка 10 лучших акций по критериям: процент роста за 5/10 лет плюс
             процент дивидендной доходности за 5/10 лет.
@@ -12,7 +11,6 @@ class Analyze {
             где представлены лучшие акции по критерию в порядке убывания
          */
          fun stockBest(years: Int, stocks: List<Stock>): String {
-
              val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
              for(stock in stocks) {
                  var totalProfit: Double
@@ -29,7 +27,6 @@ class Analyze {
                          lastPrice = stock.price2013?.toDoubleOrNull()
                      }
                  }
-
                  if (nowPrice != null && lastPrice != null && lastPrice != 0.0) {
                      val diff = nowPrice - lastPrice
                      totalProfit = countDividends(years, stock).toDouble() + countGrowPercent(diff, lastPrice)
@@ -52,7 +49,6 @@ class Analyze {
          */
          fun stockDividends(years: Int, stocks: List<Stock>): String {
              val stocksTop: MutableList<Pair<Int, Int>> = mutableListOf()
-
              for (stock in stocks) {
                  var divid: Int? = 0
 
@@ -105,7 +101,6 @@ class Analyze {
             где представлены лучшие акции по критерию в порядке убывания
          */
         fun stockGrow(years: Int, stocks: List<Stock>): String {
-
             val stocksTop: MutableList<Pair<Int, Double>> = mutableListOf()
             for (stock in stocks) {
                 var nowPrice: Double? = 0.0
@@ -121,7 +116,6 @@ class Analyze {
                         lastPrice = stock.price2013?.toDoubleOrNull()
                     }
                 }
-
                 if (nowPrice != null && lastPrice != null && lastPrice != 0.0) {
                     val diff = nowPrice - lastPrice
                     val pair = Pair(stock.uid, countGrowPercent(diff, lastPrice))

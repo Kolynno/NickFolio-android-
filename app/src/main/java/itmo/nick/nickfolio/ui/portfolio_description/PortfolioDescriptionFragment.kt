@@ -42,7 +42,8 @@ class PortfolioDescriptionFragment : Fragment() {
 
         val portfolioStockList = binding.portfolioStockList
 
-        val portfolioDb = PortfolioDatabase.getDatabasePortfolio(requireContext().applicationContext)
+        val portfolioDb = PortfolioDatabase.getDatabasePortfolio(
+            requireContext().applicationContext)
         val portfolioRepository = portfolioDb.portfolioDao()
 
         val stockDb = StockDatabase.getDatabaseStock(requireContext().applicationContext)
@@ -50,10 +51,9 @@ class PortfolioDescriptionFragment : Fragment() {
 
         runBlocking {
             launch(Dispatchers.IO) {
-
                     val stocksNames = getStockNames(portfolioRepository, stockRepository)
-
-                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stocksNames)
+                    val adapter = ArrayAdapter(requireContext(),
+                        android.R.layout.simple_list_item_1, stocksNames)
                     portfolioStockList.adapter = adapter
                 }
         }
@@ -81,18 +81,11 @@ class PortfolioDescriptionFragment : Fragment() {
                     portfolioRepository.update(portfolio)
                 }
             }
-
-            Toast.makeText(
-                requireContext(),
-                "$stockName удалено",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(requireContext(), "$stockName удалено", Toast.LENGTH_LONG).show()
 
             requireActivity().runOnUiThread {
-
                 val adapter = portfolioStockList.adapter as ArrayAdapter<String>
                 adapter.clear()
-
                 val stockNames = stocksIdsNow.map { stockId ->
                     runBlocking {
                         withContext(Dispatchers.IO) {
@@ -115,8 +108,7 @@ class PortfolioDescriptionFragment : Fragment() {
      */
      fun getStockNames(portfolioRepository: PortfolioDao, stockRepository: StockDao): List<String> {
         val ids = portfolioRepository.getStocksIdsByName(
-            requireArguments().getString("portfolioName").toString()
-        )
+            requireArguments().getString("portfolioName").toString())
         if (ids != "") {
             val stocks: List<String> = ids.split(",")
             val stocksNames: List<String> = stocks.map {

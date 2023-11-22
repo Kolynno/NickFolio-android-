@@ -35,7 +35,6 @@ class OfferDescriptionFragment : Fragment() {
         val view = binding.root
 
         val offerName = arguments?.getString("offerName")
-
         (activity as AppCompatActivity).supportActionBar?.title = offerName
         return view
     }
@@ -79,8 +78,7 @@ class OfferDescriptionFragment : Fragment() {
 
     fun getStockNames(portfolioRepository: PortfolioDao, stockRepository: StockDao): List<String> {
         val ids = portfolioRepository.getStocksIdsByName(
-            requireArguments().getString("portfolioName").toString()
-        )
+            requireArguments().getString("portfolioName").toString())
         if (ids != "") {
             val stocks: List<String> = ids.split(",")
             val stocksNames: List<String> = stocks.map {
@@ -91,7 +89,6 @@ class OfferDescriptionFragment : Fragment() {
         return emptyList()
     }
 
-
     /**
         Отобразить диалоговое окно для выбора портфеля, куда сохранить предложенные акции.
         Аргументы:
@@ -99,11 +96,8 @@ class OfferDescriptionFragment : Fragment() {
         offerRepository - репозиторий предложений
         offerName - название предложения
      */
-    private fun showPortfolioSelectionDialog(
-        portfolioRepository: PortfolioDao,
-        offerRepository: OfferDao,
-        offerName: String
-    ) {
+    private fun showPortfolioSelectionDialog(portfolioRepository: PortfolioDao,
+        offerRepository: OfferDao, offerName: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             val portfolios = portfolioRepository.getAllNames()
 
@@ -117,7 +111,6 @@ class OfferDescriptionFragment : Fragment() {
                             portfolios
                         )
                     ) { dialog: DialogInterface, which: Int ->
-
                         val selectedPortfolio = portfolios[which]
                         PortfolioOperations.addToPortfolio(
                             selectedPortfolio,
