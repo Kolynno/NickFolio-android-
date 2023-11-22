@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import itmo.nick.nickfolio.database.PortfolioDao
 import itmo.nick.nickfolio.database.PortfolioDatabase
+import itmo.nick.nickfolio.database.StockDao
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentPortfolioDescriptionBinding
 import kotlinx.coroutines.Dispatchers
@@ -49,24 +51,15 @@ class PortfolioDescriptionFragment : Fragment() {
         runBlocking {
             launch(Dispatchers.IO) {
 
-                val ids = portfolioRepository.getStocksIdsByName(
-                    requireArguments().getString("portfolioName").toString()
-                )
-                if (ids != "") {
-                    val stocks: List<String> = ids.split(",")
-                    val stocksNames: List<String> = stocks.map {
-                        stockRepository.getNameById(it.toInt())
-                    }
+                    val stocksNames = getStockNames(portfolioRepository, stockRepository)
 
-                    val adapter = ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_list_item_1,
-                        stocksNames
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stocksNames
                     )
                     portfolioStockList.adapter = adapter
                 }
-            }
+
         }
+
 
         portfolioStockList.setOnItemLongClickListener { _, _, position, _ ->
             val stockName = portfolioStockList.getItemAtPosition(position).toString()
@@ -112,6 +105,21 @@ class PortfolioDescriptionFragment : Fragment() {
             true
         }
     }
+
+     fun getStockNames(portfolioRepository: PortfolioDao, stockRepository: StockDao): List<String> {
+        val ids = portfolioRepository.getStocksIdsByName(
+            requireArguments().getString("portfolioName").toString()
+        )
+        if (ids != "") {
+            val stocks: List<String> = ids.split(",")
+            val stocksNames: List<String> = stocks.map {
+                stockRepository.getNameById(it.toInt())
+            }
+            return stocksNames
+        }
+        return emptyList()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -14,6 +14,7 @@ import itmo.nick.nickfolio.database.OfferDao
 import itmo.nick.nickfolio.database.OfferDatabase
 import itmo.nick.nickfolio.database.PortfolioDao
 import itmo.nick.nickfolio.database.PortfolioDatabase
+import itmo.nick.nickfolio.database.StockDao
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.FragmentOfferDescriptionBinding
 import itmo.nick.nickfolio.portfolio_operations.PortfolioOperations
@@ -57,12 +58,7 @@ class OfferDescriptionFragment : Fragment() {
         runBlocking {
             launch(Dispatchers.IO) {
 
-                val ids = offerRepository.getStocksIdsByName(requireArguments().getString("offerName").toString())
-                val stocks: List<String> = ids.split(",")
-
-                val stocksNames: List<String> = stocks.map {
-                    stockRepository.getNameById(it.toInt())
-                }
+                val stocksNames = getStockNames(portfolioRepository, stockRepository)
 
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, stocksNames)
                 offerStockList.adapter = adapter
@@ -73,6 +69,20 @@ class OfferDescriptionFragment : Fragment() {
         buttonToPortfolio.setOnClickListener{
             showPortfolioSelectionDialog(portfolioRepository, offerRepository, offerName.toString())
         }
+    }
+
+    fun getStockNames(portfolioRepository: PortfolioDao, stockRepository: StockDao): List<String> {
+        val ids = portfolioRepository.getStocksIdsByName(
+            requireArguments().getString("portfolioName").toString()
+        )
+        if (ids != "") {
+            val stocks: List<String> = ids.split(",")
+            val stocksNames: List<String> = stocks.map {
+                stockRepository.getNameById(it.toInt())
+            }
+            return stocksNames
+        }
+        return emptyList()
     }
 
     private fun showPortfolioSelectionDialog(

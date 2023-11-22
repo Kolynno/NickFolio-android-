@@ -3,22 +3,20 @@ package itmo.nick.nickfolio
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.navigation.NavigationView
 import itmo.nick.nickfolio.database.DataInit
-import itmo.nick.nickfolio.database.Stock
 import itmo.nick.nickfolio.database.StockDatabase
 import itmo.nick.nickfolio.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
 
@@ -28,9 +26,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
-
         if (isFirstRun) {
            DataInit.StockDataInit(sharedPreferences, application)
            DataInit.OfferDataInit(application)
@@ -68,10 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private suspend fun getDataFromDatabaseToStockDescriptionBundle(
-        stockName: String,
-        bundle: Bundle
-    ) {
+    private suspend fun getDataFromDatabaseToStockDescriptionBundle(stockName: String, bundle: Bundle) {
         val db = StockDatabase.getDatabaseStock(application)
         val stockRepository = db.stockDao()
         withContext(Dispatchers.IO) {
